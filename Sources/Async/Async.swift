@@ -12,27 +12,36 @@ import Darwin
 import CAsync
 
 /* This is just so we can use the nice async { } syntax. */
-public func async(block: @escaping () -> Void) -> Task<Void> {
+public func async(_ block: @escaping () -> Void) -> Task<Void> {
 	return Task(voidClosure: block)
 }
 
-public func async<T>(block: @escaping (Task<T>) -> T) -> Task<T> {
+public func async<T>(_ block: @escaping (Task<T>) -> T) -> Task<T> {
 	return Task<T>(taskOfT: block)
 }
 
-public func async<T>(block: @escaping () -> T) -> Task<T> {
+public func async<T>(_ block: @escaping () -> T) -> Task<T> {
 	return Task<T>(closureOfT: block)
 }
 
-public func await(task: Task<Void>) {
+public func async(_ block: @escaping (VoidTask) -> Void) -> VoidTask {
+	return VoidTask(voidTask: block)
+}
+
+public func await(_ task: Task<Void>) {
 	async_ll_await(task.task)
 	task.task = nil
 }
 
-public func await<T>(task: Task<T>) -> T {
+public func await<T>(_ task: Task<T>) -> T {
 	async_ll_await(task.task)
 	task.task = nil
 	return task.result
+}
+
+public func await(_ task: VoidTask) {
+	async_ll_await(task.task)
+	task.task = nil
 }
 
 public class Async
@@ -41,11 +50,15 @@ public class Async
 		async_ll_suspend()
 	}
 
-	public static func Wake<T>(task: Task<T>) {
+	public static func Wake<T>(_ task: Task<T>) {
 		async_ll_wake(task.task)
 	}
 
-	/* This should only ever be called with dispatch_get_main_queue(); it absolutely
+	public static func Wake(_ voidTask: VoidTask) {
+		async_ll_wake(voidTask.task)
+	}
+
+	/* This should only ever be called with DispatchQueue.main; it absolutely
 	requires that the queue uses only a single thread. */
 	public static func Schedule(q: DispatchQueue) {
 		async_ll_schedule_in_queue(q)
