@@ -70,6 +70,7 @@ class AsyncTests: XCTestCase
             ("testSimple", testSimple),
             ("testSimpleDispatch", testSimpleDispatch),
             ("testDoubleDispatch", testDoubleDispatch),
+            ("testDoubleAwait", testDoubleAwait),
         ]
     }
 }
