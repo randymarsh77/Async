@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CAsync",
+        "repositoryURL": "https://github.com/randymarsh77/casync",
+        "state": {
+          "branch": "master",
+          "revision": "e1803caaadaf1e7442e222544aa7cbb5daa42b5b",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
